@@ -10,7 +10,7 @@
 &emsp;&emsp;准入控制器是一段代码，会拦截 Kubernetes API Server 收到的请求，拦截发生在认证和鉴权完成之后，对象进行持久化之前。可以定义两种类型的 Admission webhook：Validating 和 Mutating。Validating 类型的 Webhook 可以根据自定义的准入策略决定是否拒绝请求；Mutating 类型的 Webhook 可以根据自定义配置来对请求进行编辑。<br/>
 
 # 实践探讨
-&emsp;&emsp;客户环境部署和使用方式多样，Kubernetes中工作负载型资源(workload)包括： Pod、Deployment、StatefulSet、DaemonSet等，它们最终都是通过不同的组织形态完成对pod的控制，本着可以镜像到最精确节点流量的初衷，给出具体的镜像实践思路，包括从技术、管理上做出规范规定，并指出方案的限定条件，供各位探讨
+&emsp;&emsp;客户环境部署和使用方式多样，Kubernetes中工作负载型资源(workload)包括： Pod、Deployment、StatefulSet、DaemonSet等，工作负载资源负责管理和运行集群上的容器。容器是由控制器通过Pods创建的，本着可以镜像到最精确节点流量的初衷，给出具体的镜像实践思路，包括从技术、管理上做出规范规定，并指出方案的限定条件，供各位探讨
 
 # 方案一：修改 yaml 配置文件
 * 直接修改YAML文件，直接将流量采集的镜像部署到被监控应用的同一个POD中去：
@@ -39,10 +39,12 @@ spec:
        stdin: true
        tty: true
 ```
-### 实践探讨
+### 方案一实践探讨
 #### 1. 适用范围
-
-#### 2. 如何快速定位到工作负载和镜像负载?
+适用范围最大，所有工作负载都可以满足，不足之处
+#### 2. 如何快速定位到工作负载?
+需要获取业务系统的准确的工作负载的位置，包括namespace、name
+#### 3. 如何区分镜像负载?
 
 #### 3. 权限如何设定
 
